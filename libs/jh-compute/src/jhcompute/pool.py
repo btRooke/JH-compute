@@ -18,7 +18,9 @@ class Pool:
 
         self.python_path = sys.executable
         self.node_count = node_count
-        self.temp_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
+        self.temp_dir = os.path.dirname(os.getcwd()) + "/temp/"
+
+        print(self.temp_dir)
 
         # make temp directory
 
@@ -75,9 +77,11 @@ class Pool:
         return filename
 
     def submit(self, task_object: dict) -> dict:
+        logging.info(f"Task submitted: {task_object}")
         node = self.free_nodes.get()
         result = node.run_task(task_object)  # TODO ignore node death for the min :)
         self.free_nodes.put(node)
+        logging.info(f"Task complete: {task_object}")
         return result
 
 
@@ -88,6 +92,8 @@ class Node:
         self.pool = pool
 
     def run_task(self, task_object: dict) -> dict:
+
+        logging.info(f"Task started on {self.hostname} -- {task_object}")
 
         object_file = self.pool.write_to_temp(task_object)  # TODO clean up this file
 

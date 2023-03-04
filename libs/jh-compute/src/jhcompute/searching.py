@@ -7,14 +7,15 @@ from jhcompute.ssh import run_command
 
 def all_nodes() -> List[str]:
 
-    # with open(jhcompute.resource("list.csv"), "r") as file:
-    #     raw = file.read()
-    #
-    # # split by newline and remove empty lines
-    #
-    # return [line for line in raw.split("\n") if line]
+    with open(jhcompute.resource("list.csv"), "r") as file:
+        raw = file.read()
 
-    return [f"pc7-{i:03}-l" for i in range(151)]
+    # split by newline and remove empty lines
+
+    return [line for line in raw.split("\n") if line]
+
+    #
+    # return [f"pc7-{i:03}-l" for i in range(1, 151)]
 
 
 def user_count(hostname: str) -> int:
