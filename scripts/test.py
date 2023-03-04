@@ -7,7 +7,7 @@ logging.basicConfig(
     level=logging.DEBUG
 )
 
-pool = JHPool(5, "bogo.py")
+pool = JHPool(40, "bogo.py")
 
 task_object = {
     "size": 10000000
@@ -15,7 +15,7 @@ task_object = {
 
 threads = [
     Thread(target=lambda: pool.submit(task_object))
-    for i in range(5)
+    for i in range(40)
 ]
 
 [thread.start() for thread in threads]
