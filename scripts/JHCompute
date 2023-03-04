@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import code
 
 JH_COMPUTE_BANNER = """
@@ -14,11 +15,18 @@ JH_COMPUTE_BANNER = """
 """
 
 
+def clear():
+    os.system("cls" if os.name == "nt" else "clear")
+
 def start_repl():
     code.interact(banner=JH_COMPUTE_BANNER, local=globals())
 
 # initialising the environment
 
-a = 123
-
+from jhcompute import *
 start_repl()
+
+# pool = JHCPool(20, "play.py")
+# pool.queue("[{model1}, {model2}, {model3}]")
+# some value back
+

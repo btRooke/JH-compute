@@ -1,29 +1,25 @@
 from threading import Thread
 from typing import List, Tuple
-import subprocess
+
+import jhcompute
+from jhcompute.ssh import run_command
 
 
 def all_nodes() -> List[str]:
-    with open("list.csv", "r") as file:
-        raw = file.read()
 
-    # split by newline and remove empty lines
-    return [line for line in raw.split("\n") if line]
+    # with open(jhcompute.resource("list.csv"), "r") as file:
+    #     raw = file.read()
+    #
+    # # split by newline and remove empty lines
+    #
+    # return [line for line in raw.split("\n") if line]
 
-
-def ssh(hostname: str, cmd: List[str], timeout: int = 2):
-
-    return subprocess.run([
-        "ssh",
-        "-o",
-        f"ConnectTimeout={timeout}",
-        hostname
-    ] + cmd, capture_output=True)
+    return [f"pc7-{i:03}-l" for i in range(151)]
 
 
 def user_count(hostname: str) -> int:
 
-    result = ssh(hostname, ["w", "-h"])
+    result = run_command(hostname, ["w", "-h"])
 
     if result.returncode != 0:
         return -1
@@ -33,6 +29,7 @@ def user_count(hostname: str) -> int:
 
 
 class UserCountFinder(Thread):
+
     count = -2
 
     def __init__(self, hostname):
@@ -44,6 +41,7 @@ class UserCountFinder(Thread):
 
 
 def active_nodes_user_count() -> List[Tuple[str, int]]:
+
     """
     Get tuples of (hostname, user_count) for all active nodes in JH.
 
