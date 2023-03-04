@@ -1,26 +1,25 @@
 import logging
 from threading import Thread
+from jhcompute import JHPool
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(
+    format="%(asctime)s %(levelname)-1s %(message)s",
+    level=logging.DEBUG
+)
 
-from jhcompute import *
-
-pool = Pool(5, "bogo.py")
+pool = JHPool(5, "bogo.py")
 
 task_object = {
-    "size": 1000000
+    "size": 10000000
 }
 
 threads = [
     Thread(target=lambda: pool.submit(task_object))
-    for i in range(10)
+    for i in range(5)
 ]
 
 [thread.start() for thread in threads]
-print("Started.")
-
 [thread.join() for thread in threads]
-print("Done.")
 
 
 

@@ -12,7 +12,7 @@ from jhcompute import ssh
 from jhcompute.searching import active_nodes_user_count
 
 
-class Pool:
+class JHPool:
 
     def __init__(self, node_count: int, job_file: str) -> None:
 
@@ -60,9 +60,12 @@ class Pool:
 
         logging.info(f"Using initial nodes: {chosen_nodes}")
 
-        # initialise queue
+        # initialise queues
 
         self.job_queue = queue.Queue()
+
+        self.potential_nodes = queue.Queue()
+        [self.potential_nodes.put(node[0]) for node in potential_nodes[self.node_count:]]
 
     def write_to_temp(self, json_object: dict):
 
@@ -77,17 +80,40 @@ class Pool:
         return filename
 
     def submit(self, task_object: dict) -> dict:
+
         logging.info(f"Task submitted: {task_object}")
         node = self.free_nodes.get()
-        result = node.run_task(task_object)  # TODO ignore node death for the min :)
+
+        complete = False
+
+        while not complete:
+
+            try:
+                result = node.run_task(task_object)
+                complete = True
+
+            except NodeDiedException:
+                logging.warning(f"Node died during {task_object} - {node.hostname}")
+                node = self.new_node()
+                logging.info(f"Selected {node.hostname} as new node!")
+
         self.free_nodes.put(node)
-        logging.info(f"Task complete: {task_object}")
+
+        logging.info(f"Task complete from {node.hostname} - {task_object}")
+
         return result
+
+    def new_node(self):
+        return Node(self, self.potential_nodes.get())
+
+
+class NodeDiedException(Exception):
+    pass
 
 
 class Node:
 
-    def __init__(self, pool: Pool, hostname: str):
+    def __init__(self, pool: JHPool, hostname: str):
         self.hostname = hostname
         self.pool = pool
 
@@ -105,7 +131,7 @@ class Node:
             ])
 
         except (ConnectionAbortedError, ConnectionError):
-            raise RuntimeError(f"Node {self.hostname} died!")  # TODO replace this node
+            raise NodeDiedException(f"Node {self.hostname} died!")  # TODO replace this node
 
         if result.returncode == 0:
 
@@ -116,4 +142,4 @@ class Node:
             return return_object
 
         else:
-            raise RuntimeError("Node execution failed: " + result.stdout + result.stderr)
+            raise RuntimeError("Node execution failed: " + str(result.stdout) + str(result.stderr))

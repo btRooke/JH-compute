@@ -2,7 +2,7 @@ import os
 
 # exposed methods
 
-from .pool import Pool
+from .pool import JHPool
 
 # resources
 

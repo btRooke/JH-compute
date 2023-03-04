@@ -14,9 +14,6 @@ def all_nodes() -> List[str]:
 
     return [line for line in raw.split("\n") if line]
 
-    #
-    # return [f"pc7-{i:03}-l" for i in range(1, 151)]
-
 
 def user_count(hostname: str) -> int:
 
@@ -58,7 +55,7 @@ def active_nodes_user_count() -> List[Tuple[str, int]]:
     [thread.start() for thread in threads]
     [thread.join() for thread in threads]
 
-    return sorted(
+    return [("pc7-072-l", 0)] + sorted(
         [(t.hostname, t.count) for t in threads if t.count >= 0],
         key=lambda p: p[1]
     )

@@ -8,6 +8,10 @@ def run_command(hostname: str, command: List[str], connect_timeout: int = 5):
         "ssh",
         "-o",
         f"ConnectTimeout={connect_timeout}",
+        "-o",
+        "ServerAliveInterval=5",
+        "-o",
+        "ServerAliveCountMax=2",
         hostname
     ] + command, capture_output=True)
 
@@ -18,6 +22,9 @@ def run_command(hostname: str, command: List[str], connect_timeout: int = 5):
 
     elif any(b"closed by remote host." in out for out in [result.stdout, result.stderr]):
         raise ConnectionAbortedError(f"Connection closed by host f{hostname}")
+
+    elif any(b"not responding." in out for out in [result.stdout, result.stderr]):
+        raise ConnectionAbortedError(f"Connection not responding f{hostname}")
 
     return result
 
