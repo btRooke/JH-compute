@@ -20,8 +20,6 @@ class JHPool:
         self.node_count = node_count
         self.temp_dir = os.path.dirname(os.getcwd()) + "/temp/"
 
-        print(self.temp_dir)
-
         # make temp directory
 
         try:
@@ -38,13 +36,15 @@ class JHPool:
         if not self.job_file.is_file():
             raise FileNotFoundError(f"Can't find job file \"{job_file}\"...")
 
-        logging.info(f"Loaded {self.job_file} as job file")
+        logging.info(f"Loaded {self.job_file} as job file!")
 
         # find nodes
 
         potential_nodes = active_nodes_user_count()
 
-        logging.info(f"Found active potential {len(potential_nodes)}")
+        logging.info(
+            f"Found {len(potential_nodes)} potential active nodes -- {len([n for n in potential_nodes if n[1] == 0])} have no users"
+        )
 
         if len(potential_nodes) < self.node_count:
             raise RuntimeError(f"Too few nodes active -- found only {len(potential_nodes)}")
@@ -81,7 +81,7 @@ class JHPool:
 
     def submit(self, task_object: dict) -> dict:
 
-        logging.info(f"Task submitted: {task_object}")
+        logging.info(f"Task submitted -- {task_object}")
         node = self.free_nodes.get()
 
         complete = False
@@ -99,7 +99,7 @@ class JHPool:
 
         self.free_nodes.put(node)
 
-        logging.info(f"Task complete from {node.hostname} - {task_object}")
+        logging.info(f"Task complete from {node.hostname} -- {task_object}")
 
         return result
 
@@ -121,7 +121,7 @@ class Node:
 
         logging.info(f"Task started on {self.hostname} -- {task_object}")
 
-        object_file = self.pool.write_to_temp(task_object)  # TODO clean up this file
+        object_file = self.pool.write_to_temp(task_object)
 
         try:
             result = ssh.run_command(self.hostname, [
@@ -131,7 +131,7 @@ class Node:
             ])
 
         except (ConnectionAbortedError, ConnectionError):
-            raise NodeDiedException(f"Node {self.hostname} died!")  # TODO replace this node
+            raise NodeDiedException(f"Node {self.hostname} died!")
 
         if result.returncode == 0:
 

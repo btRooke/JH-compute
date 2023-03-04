@@ -1,6 +1,7 @@
 import json
 import random
 import sys
+from jhcompute import JHPool
 
 with open(sys.argv[1], "r") as f:
     parameters = json.load(f)

@@ -55,11 +55,8 @@ def active_nodes_user_count() -> List[Tuple[str, int]]:
     [thread.start() for thread in threads]
     [thread.join() for thread in threads]
 
-    return [("pc7-072-l", 0)] + sorted(
+    return sorted(
         [(t.hostname, t.count) for t in threads if t.count >= 0],
         key=lambda p: p[1]
     )
 
-
-if __name__ == "__main__":
-    print(active_nodes_user_count())
