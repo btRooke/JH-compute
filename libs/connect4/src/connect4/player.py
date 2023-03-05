@@ -1,3 +1,6 @@
+from silence_tensorflow import silence_tensorflow
+silence_tensorflow()
+
 import connect4, os
 import numpy as np
 import tensorflow as tf

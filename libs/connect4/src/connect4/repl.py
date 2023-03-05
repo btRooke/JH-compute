@@ -12,6 +12,7 @@ if __name__ == "__main__":
 
     print(wins)
     opponent = player1 if wins[0] > wins[1] else player2
+    opponent.write("opponent")
     opp_turn = False
 
     # Play against it
