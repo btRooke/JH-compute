@@ -7,10 +7,7 @@ if __name__ == "__main__":
     player1 = Player()
     player2 = Player()
 
-    print("Training")
     trainer.train(1000, player1, player2, 0.9998)
-
-    print("Competing")
     wins = trainer.compete(100, player1, player2)
 
     print(wins)
