@@ -1,5 +1,7 @@
+from silence_tensorflow import silence_tensorflow
+silence_tensorflow()
+
 import logging
-import os
 import shutil
 from threading import Thread
 
@@ -38,9 +40,8 @@ class Competition(Thread):
         self.two.write(two_path)
 
         result = self.pool.submit({
-            "train_games": 10,
-            "comp_games": 10,
-            "learning_batch_size": 5,
+            "train_games": 1000,
+            "comp_games": 100,
             "epsilon_decay": 0.9998,
             "player_one_path": one_path,
             "player_two_path": two_path
@@ -54,7 +55,19 @@ class Competition(Thread):
 
 winning_models = [Player() for _ in range(pool.node_count * 2)]
 
-while winning_models != 1:
+while len(winning_models) != 1:
+
+    remaining_count = len(winning_models)
+    logging.info(f"{remaining_count} models remaining")
+
+    if remaining_count == 8:
+        logging.info(f"QUARTER FINALS!")
+
+    if remaining_count == 4:
+        logging.info(f"SEMIS!")
+
+    if remaining_count == 2:
+        logging.info(f"FINALS!")
 
     competitions = []
 
@@ -69,7 +82,7 @@ while winning_models != 1:
     [thread.join() for thread in competitions]
     [winning_models.append(c.winning_model) for c in competitions]
 
-winning_models[0].write("winner.txt")
+winning_models[0].write("winner")
 
 
 
