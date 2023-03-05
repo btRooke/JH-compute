@@ -17,7 +17,7 @@ logging.basicConfig(
 
 # create the pool
 
-pool = JHPool(16, "training_task.py")
+pool = JHPool(32, "training_task.py")
 
 # training round
 

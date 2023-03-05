@@ -17,3 +17,11 @@
 .Column-holeContainer:not(:last-of-type) {
     border-bottom: dotted 1px #e7e4e4;
 }
+
+.Column-holeContainer.one {
+    background-color: #6969c5;
+}
+
+.Column-holeContainer.two {
+    background-color: #b76666;
+}

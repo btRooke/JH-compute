@@ -19,7 +19,7 @@ player_two = Player(params["player_two_path"])
 train(
     params["train_games"],
     player_one, player_two,
-    params["learning_batch_size"], params["epsilon_decay"]
+    params["epsilon_decay"]
 )
 
 wins_one, wins_two = compete(params["comp_games"], player_one, player_two)

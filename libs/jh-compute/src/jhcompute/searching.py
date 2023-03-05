@@ -17,7 +17,11 @@ def all_nodes() -> List[str]:
 
 def user_count(hostname: str) -> int:
 
-    result = run_command(hostname, ["w", "-h"])
+    try:
+        result = run_command(hostname, ["w", "-h"])
+
+    except:
+        return -1
 
     if result.returncode != 0:
         return -1
