@@ -3,8 +3,6 @@ import "../css/ConnectFourContainer.css"
 import React, {useEffect, useState} from "react";
 import * as tf from '@tensorflow/tfjs';
 
-const d = [0, 0, 1, 2, 0, 1];
-
 const ConnectFourContainer = () => {
 
     const [model, setModel] = useState<any>(undefined);
@@ -12,8 +10,8 @@ const ConnectFourContainer = () => {
     async function loadModel(url: any) {
 
         try {
-            console.log(`http://localhost:3000/${url}`)
-            const model = await tf.loadGraphModel(`http://localhost:3000/${url}`);
+            console.log(`${url}`)
+            const model = await tf.loadGraphModel(`${url}`);
             setModel(model);
             console.log("Load model success")
         }
