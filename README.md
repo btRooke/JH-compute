@@ -1,3 +1,3 @@
-# STACSHack 9
+# JH Compute
 
-Something AI related...
+Built for STACSHack 9 (2023).
