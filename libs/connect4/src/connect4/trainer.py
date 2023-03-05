@@ -1,4 +1,4 @@
-import connect4, argparse
+import connect4, argparse, os
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
@@ -37,7 +37,7 @@ def train(n_games, player1, player2, learning_batch, epsilon_decay):
         # Play the game
         while True:
             player = player1 if p1_turn else player2
-            player_n = 0 if p1_turn else 1
+            player_n = i % 2 == 0
 
             action = player.act(board, epsilon)
             memory[player_n].add(board.state, action)
@@ -112,20 +112,6 @@ def compete(n_games, player1, player2):
 
     return wins
 
-"""
-if __name__ == "__main__":
-    # Take command line args
-    argparser = argparse.ArgumentParser()
-
-    argparser.add_argument("--train",   type=int, required=True)
-    argparser.add_argument("--compete", type=int, required=True)
-    argparser.add_argument("--player1", type=str)
-    argparser.add_argument("--player2", type=str)
-
-    args = argparser.parse_args()
-
-    if args.player1:
-"""
 
 if __name__ == "__main__":
     tf.get_logger().setLevel('ERROR')

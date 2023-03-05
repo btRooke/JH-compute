@@ -1,39 +1,51 @@
-import connect4
+import connect4, os
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 
 class Player:
-    def __init__(self) -> None:
-        # Rate of decrease for rewarding moves further from the end state
-        self.discount_factor = 0.9
+    def __init__(self, path = None) -> None:
+        if path and not os.path.isfile(path):
+            raise FileNotFoundError()
+    
+        try:
+            self.model = keras.models.load_model(path)
+        
+        except (IOError, ImportError):
+            # Rate of decrease for rewarding moves further from the end state
+            self.discount_factor = 0.9
 
-        # Create a CNN model
-        self.model = keras.models.Sequential()
-        # 64 4x4 kernels
-        self.model.add(keras.layers.Conv2D(64, (4, 4), activation='relu', input_shape=(6, 7, 1)))
-        # 64 2x2 kernels
-        self.model.add(keras.layers.Conv2D(64, (2, 2), activation='relu'))
-        # Flattener to reduce dimensions from 2 to 1 for dense layers
-        self.model.add(keras.layers.Flatten())
-        # Two 64-node dense layers
-        self.model.add(keras.layers.Dense(64, activation='relu'))
-        self.model.add(keras.layers.Dense(64, activation='relu'))
-        # Output layer with one node per column
-        self.model.add(keras.layers.Dense(connect4.WIDTH, activation='softmax'))
+            # Create a CNN model
+            self.model = keras.models.Sequential()
+            # 64 4x4 kernels
+            self.model.add(keras.layers.Conv2D(64, (4, 4), activation='relu', input_shape=(6, 7, 1)))
+            # 64 2x2 kernels
+            self.model.add(keras.layers.Conv2D(64, (2, 2), activation='relu'))
+            # Flattener to reduce dimensions from 2 to 1 for dense layers
+            self.model.add(keras.layers.Flatten())
+            # Two 64-node dense layers
+            self.model.add(keras.layers.Dense(64, activation='relu'))
+            self.model.add(keras.layers.Dense(64, activation='relu'))
+            # Output layer with one node per column
+            self.model.add(keras.layers.Dense(connect4.WIDTH, activation='softmax'))
 
-        self.model.compile(
-            loss='mean_squared_error',
-            optimizer=keras.optimizers.Adam(),
-            metrics=['accuracy']
-        )
+            self.model.compile(
+                loss='mean_squared_error',
+                optimizer=keras.optimizers.Adam(),
+                metrics=['accuracy']
+            )
+
+
+    # Write the model to a file
+    def write(self, path: str):
+        self.model.save(path)
 
 
     # Given a Connect 4 board state and a randomness coefficient, choose a move
     def act(self, board: connect4.Board, epsilon: float) -> int:
         assert(epsilon >= 0 and epsilon <= 1)
 
-        action, prob_weights = self.decide_move(board, epsilon)
+        action, _ = self.decide_move(board, epsilon)
 
         if board.move(action):
             return action
