@@ -10,14 +10,14 @@ class Player:
     def __init__(self, path = None) -> None:
         if path and not os.path.isdir(path):
             raise FileNotFoundError()
-    
+        
+        # Rate of decrease for rewarding moves further from the end state
+        self.discount_factor = 0.9
+            
         try:
             self.model = keras.models.load_model(path)
         
         except (IOError, ImportError):
-            # Rate of decrease for rewarding moves further from the end state
-            self.discount_factor = 0.9
-
             # Create a CNN model
             self.model = keras.models.Sequential()
             # 64 4x4 kernels
