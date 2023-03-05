@@ -39,7 +39,7 @@ We don't use it in this example though...
 
 threads = [
     Thread(target=lambda: pool.submit(task_object))
-    for i in range(5)
+    for i in range(10)
 ]
 
 [thread.start() for thread in threads]

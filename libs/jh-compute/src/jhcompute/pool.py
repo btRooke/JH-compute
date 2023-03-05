@@ -133,12 +133,28 @@ class JHPool:
             self.task_id += 1
             return to_return
 
-    def write_to_temp(self, json_object: dict):
+    def get_tempfile_path(self):
 
-        filename = self.temp_dir + f"{''.join(random.choices(string.ascii_letters, k=32))}.json"
+        """
+        Get an absolute temporary file path.
+
+        Delete this with os.remove(path).
+
+        Probably thread-safe.
+
+        :return: An absolute path to a temporary file.
+        """
+
+        filename = self.temp_dir + f"{''.join(random.choices(string.ascii_letters, k=32))}"
 
         while Path(filename).is_file():
-            filename = self.temp_dir + f"{''.join(random.choices(string.ascii_letters, k=32))}.json"
+            filename = self.temp_dir + f"{''.join(random.choices(string.ascii_letters, k=32))}"
+
+        return filename
+
+    def write_to_temp(self, json_object: dict):
+
+        filename = self.get_tempfile_path()
 
         with open(filename, "w") as file:
             json.dump(json_object, file)

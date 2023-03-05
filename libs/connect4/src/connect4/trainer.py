@@ -4,7 +4,9 @@ silence_tensorflow()
 import connect4
 import numpy as np
 from tensorflow import keras
-from player import Player
+
+from connect4 import Player
+
 
 class Memory:
     def __init__(self): 
