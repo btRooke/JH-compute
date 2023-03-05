@@ -33,7 +33,7 @@ jobs:
       - name: npm
         run: cd web; npm install
       - name: Build
-        run: cd web; npm run build
+        run: cd web;CI= npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
