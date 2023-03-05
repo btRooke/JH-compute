@@ -2,7 +2,9 @@ import connect4, argparse, os
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
-from player import Player
+
+from connect4 import Player
+
 
 class Memory:
     def __init__(self): 

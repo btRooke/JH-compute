@@ -3,9 +3,12 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 
+from connect4 import Board
+
+
 class Player:
     def __init__(self, path = None) -> None:
-        if path and not os.path.isfile(path):
+        if path and not os.path.isdir(path):
             raise FileNotFoundError()
     
         try:
@@ -42,7 +45,7 @@ class Player:
 
 
     # Given a Connect 4 board state and a randomness coefficient, choose a move
-    def act(self, board: connect4.Board, epsilon: float) -> int:
+    def act(self, board: Board, epsilon: float) -> int:
         assert(epsilon >= 0 and epsilon <= 1)
 
         action, _ = self.decide_move(board, epsilon)
