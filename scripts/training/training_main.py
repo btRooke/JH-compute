@@ -14,7 +14,7 @@ The environment (or venv) that you're running this example main controller from
 should have all of the dependencies that your task script requires.
 """
 
-pool = JHPool(5, "example_task.py")  # pool of 30 nodes, the task script is "training_task.py"
+pool = JHPool(5, "training_task.py")  # pool of 30 nodes, the task script is "training_task.py"
 
 """
 The task object is a dict that your task script can read from the path in 
