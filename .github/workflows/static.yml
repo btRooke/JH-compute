@@ -30,7 +30,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: npm install --prefix web
+      - name: npm
+        run: npm install --prefix web
       - name: Build
         run: npm run build --prefix web
       - name: Setup Pages
@@ -38,7 +39,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
           path: './web/build'
       - name: Deploy to GitHub Pages
         id: deployment
