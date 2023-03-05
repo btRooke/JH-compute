@@ -1,0 +1,8 @@
+.ConnectFourGrid-container {
+    background-color: #e7e4e4;
+    border-radius: 10px;
+    padding: 1em;
+    gap: 1em;
+    display: flex;
+    justify-content: center;
+}

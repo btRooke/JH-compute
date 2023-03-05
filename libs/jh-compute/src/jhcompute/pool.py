@@ -35,6 +35,9 @@ class JHPool:
         self.node_count = node_count
         self.temp_dir = os.path.dirname(os.getcwd()) + "/temp/"
 
+        logging.info(f"Using {self.python_path} as python")
+        logging.info(f"Using {self.temp_dir} as temp directory")
+
         # make temp directory
 
         try:
@@ -181,4 +184,9 @@ class Node:
             return return_object
 
         else:
-            raise RuntimeError(f"Node {self.hostname} execution failed during {task_id}: " + str(result.stdout) + str(result.stderr))
+
+            raise RuntimeError(
+                f"Node {self.hostname} execution failed during {task_id}\n"
+                f"stdout:\n{result.stdout.decode()}\n"
+                f"stderr:\n{result.stderr.decode()}\n"
+            )

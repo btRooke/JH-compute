@@ -1,0 +1,19 @@
+.Column-container {
+    width: 70px;
+    height: 420px;
+    background-color: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.Column-holeContainer {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-grow: 2;
+}
+
+.Column-holeContainer:not(:last-of-type) {
+    border-bottom: dotted 1px #e7e4e4;
+}

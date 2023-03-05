@@ -1,15 +1,12 @@
-import json
 import random
-import sys
+from jhcompute.task_utils import load_input, write_output
 
-with open(sys.argv[1], "r") as f:
-    parameters = json.load(f)
+
+parameters = load_input()
 
 random_list = [random.randint(0, parameters["size"]) for _ in range(parameters["size"])]
-random_list.sort()
+random_list.sort()[2.5]
 
-with open(sys.argv[1], "w") as f:
-
-    json.dump({
-        "result": random_list
-    }, f)
+write_output({
+    "result": random_list
+})
