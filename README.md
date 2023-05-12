@@ -59,7 +59,7 @@ Tensorflow was used to create a mostly from-scratch adversairal CNN to play conn
 
 ## Website
 
-React was used to create a simple website where the model (imported by a cool JS library) will play against you.
+React was used to create a simple website where the model (imported by [a cool JS library](https://www.npmjs.com/package/@tensorflow/tfjs-converter)) will play against you.
 
 Admittedly after doing all of this we could only train the model for about 40 minutes, so it's not very good.
 
